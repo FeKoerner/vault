@@ -111,6 +111,7 @@ func NewACL(ctx context.Context, policies []*Policy) (*ACL, error) {
 			switch {
 			case pc.HasSegmentWildcards:
 				raw, ok = a.segmentWildcardPaths[pc.Path]
+                fmt.Printf("=> pc.HasSegmentWildcards")
 			default:
 				// Check which tree to use
 				tree = a.exactRules
@@ -316,6 +317,7 @@ func (a *ACL) Capabilities(ctx context.Context, path string) (pathCapabilities [
 
 // AllowOperation is used to check if the given operation is permitted.
 func (a *ACL) AllowOperation(ctx context.Context, req *logical.Request, capCheckOnly bool) (ret *ACLResults) {
+	//fmt.Printf("=> AllowOperation()\n")
 	ret = new(ACLResults)
 
 	// Fast-path root
@@ -518,6 +520,58 @@ type wcPathDescr struct {
 // of permissions from some allowed path underneath the mount (for use in mount
 // access checks), or nil indicating no non-deny permissions were found.
 func (a *ACL) CheckAllowedFromNonExactPaths(path string, bareMount bool) *ACLPermissions {
+	fmt.Printf("=> CheckAllowedFromNonExactPaths(path, bareMount)\n")
+    fmt.Printf("path: %s\n", path)
+    fmt.Printf("bareMount: %t\n", bareMount)
+/*
+// ACL is used to wrap a set of policies to provide
+// an efficient interface for access control.
+type ACL struct {
+	// exactRules contains the path policies that are exact
+	exactRules *radix.Tree
+
+	// prefixRules contains the path policies that are a prefix
+	prefixRules *radix.Tree
+
+	segmentWildcardPaths map[string]interface{}
+
+	// root is enabled if the "root" named policy is present.
+	root bool
+
+	// Stores policies that are actually RGPs for later fetching
+	rgpPolicies []*Policy
+}
+*/
+        //fmt.Printf("Type: ")
+	    //fmt.Println(reflect.TypeOf(a.segmentWildcardPaths))
+        // => map[string] interface {}
+
+        fmt.Printf("Size of a.segmentWildcardPaths: %d\n", len(a.segmentWildcardPaths))
+        
+        /*
+        for key, value := range a.segmentWildcardPaths {
+                fmt.Printf("%s value is %v\n", key, value)
+        }
+
+        for k, v := range a.segmentWildcardPaths {
+            //fmt.Printf("len(key): %d, len(value): %d\n", len(k), len(v))
+            fmt.Printf("key: %T, value: %T\n", reflect.TypeOf(k), reflect.TypeOf(v))
+        fmt.Printf("=> Switch case\n")
+        switch c := v.(type) {
+          case string:
+            fmt.Printf("Item %q is a string, containing %q\n", k, c)
+          case float64:
+            fmt.Printf("Looks like item %q is a number, specifically %f\n", k, c)
+          case *radix.Tree:
+            fmt.Printf("It is a radix.Tree")
+          default:
+            fmt.Printf("==> Here")
+            fmt.Printf("Not sure what type item %q is, but I think it might be %T\n", k, c)
+          }
+        }
+        fmt.Println("After Switch")
+        */
+        
 	wcPathDescrs := make([]wcPathDescr, 0, len(a.segmentWildcardPaths)+1)
 
 	less := func(i, j int) bool {
@@ -599,7 +653,9 @@ func (a *ACL) CheckAllowedFromNonExactPaths(path string, bareMount bool) *ACLPer
 	pathParts := strings.Split(path, "/")
 
 SWCPATH:
+    fmt.Printf("Lable SWCPATH\n")
 	for fullWCPath := range a.segmentWildcardPaths {
+        fmt.Printf("fullWCPath: %s\n", fullWCPath)
 		if fullWCPath == "" {
 			continue
 		}
@@ -671,7 +727,7 @@ SWCPATH:
 }
 
 func (c *Core) performPolicyChecks(ctx context.Context, acl *ACL, te *logical.TokenEntry, req *logical.Request, inEntity *identity.Entity, opts *PolicyCheckOpts) *AuthResults {
-	ret := new(AuthResults)
+    ret := new(AuthResults)
 
 	// First, perform normal ACL checks if requested. The only time no ACL
 	// should be applied is if we are only processing EGPs against a login
