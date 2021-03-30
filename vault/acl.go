@@ -653,7 +653,6 @@ type ACL struct {
 	pathParts := strings.Split(path, "/")
 
 SWCPATH:
-    fmt.Printf("Lable SWCPATH\n")
 	for fullWCPath := range a.segmentWildcardPaths {
         fmt.Printf("fullWCPath: %s\n", fullWCPath)
 		if fullWCPath == "" {
