@@ -44,7 +44,7 @@ func (c *Client) DialLDAP(cfg *ConfigEntry) (Connection, error) {
 		switch u.Scheme {
 		case "ldap":
 			if port == "" {
-				port = "389"
+				port = "2389"
 			}
 			conn, err = c.LDAP.Dial("tcp", net.JoinHostPort(host, port))
 			if err != nil {

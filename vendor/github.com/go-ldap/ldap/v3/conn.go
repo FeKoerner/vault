@@ -29,7 +29,7 @@ const (
 
 const (
 	// DefaultLdapPort default ldap port for pure TCP connection
-	DefaultLdapPort = "389"
+	DefaultLdapPort = "2389"
 	// DefaultLdapsPort default ldap port for SSL connection
 	DefaultLdapsPort = "636"
 )

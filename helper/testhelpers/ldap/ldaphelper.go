@@ -17,7 +17,7 @@ func PrepareTestContainer(t *testing.T, version string) (cleanup func(), cfg *ld
 		ImageRepo:     "michelvocks/docker-test-openldap",
 		ImageTag:      version,
 		ContainerName: "ldap",
-		Ports:         []string{"389/tcp"},
+		Ports:         []string{"2389/tcp"},
 		//Env:        []string{"LDAP_DEBUG_LEVEL=384"},
 	})
 	if err != nil {
