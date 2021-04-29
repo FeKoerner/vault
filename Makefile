@@ -3,9 +3,9 @@
 THIS_FILE := $(lastword $(MAKEFILE_LIST))
 
 TEST?=$$($(GO_CMD) list ./... | grep -v /vendor/ | grep -v /integ)
-TEST_TIMEOUT?=45m
-EXTENDED_TEST_TIMEOUT=60m
-INTEG_TEST_TIMEOUT=120m
+TEST_TIMEOUT?=10m
+EXTENDED_TEST_TIMEOUT=10m
+INTEG_TEST_TIMEOUT=10m
 VETARGS?=-asmdecl -atomic -bool -buildtags -copylocks -methods -nilfunc -printf -rangeloops -shift -structtags -unsafeptr
 EXTERNAL_TOOLS_CI=\
 	github.com/elazarl/go-bindata-assetfs/... \
@@ -66,6 +66,7 @@ test: prep
 	VAULT_DEV_ROOT_TOKEN_ID= \
 	VAULT_ACC= \
 	$(GO_CMD) test -tags='$(BUILD_TAGS)' $(TEST) $(TESTARGS) -timeout=$(TEST_TIMEOUT) -parallel=20
+	#$(GO_CMD) test -tags='$(BUILD_TAGS)' TestTokenStore_IdentityPolicies $(TESTARGS) -timeout=$(TEST_TIMEOUT) -parallel=20
 
 testcompile: prep
 	@for pkg in $(TEST) ; do \

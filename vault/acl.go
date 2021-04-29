@@ -111,7 +111,8 @@ func NewACL(ctx context.Context, policies []*Policy) (*ACL, error) {
 			switch {
 			case pc.HasSegmentWildcards:
 				raw, ok = a.segmentWildcardPaths[pc.Path]
-                fmt.Printf("=> pc.HasSegmentWildcards")
+                //fmt.Printf("=> pc.HasSegmentWildcards\n")
+                //fmt.Println(raw)
 			default:
 				// Check which tree to use
 				tree = a.exactRules
@@ -520,9 +521,11 @@ type wcPathDescr struct {
 // of permissions from some allowed path underneath the mount (for use in mount
 // access checks), or nil indicating no non-deny permissions were found.
 func (a *ACL) CheckAllowedFromNonExactPaths(path string, bareMount bool) *ACLPermissions {
-	fmt.Printf("=> CheckAllowedFromNonExactPaths(path, bareMount)\n")
+	/*
+    fmt.Printf("=> CheckAllowedFromNonExactPaths(path, bareMount)\n")
     fmt.Printf("path: %s\n", path)
     fmt.Printf("bareMount: %t\n", bareMount)
+    */
 /*
 // ACL is used to wrap a set of policies to provide
 // an efficient interface for access control.
@@ -546,32 +549,23 @@ type ACL struct {
 	    //fmt.Println(reflect.TypeOf(a.segmentWildcardPaths))
         // => map[string] interface {}
 
-        fmt.Printf("Size of a.segmentWildcardPaths: %d\n", len(a.segmentWildcardPaths))
-        
+        //fmt.Printf("Size of a.segmentWildcardPaths: %d\n", len(a.segmentWildcardPaths))
+        //fmt.Printf("Root %t\n", a.root)
+        //fmt.Printf("a.prefixRules %t %v\n", a.prefixRules,*a.prefixRules)
         /*
-        for key, value := range a.segmentWildcardPaths {
-                fmt.Printf("%s value is %v\n", key, value)
-        }
+        var data0 map[string]interface{}
+        data0 = a.exactRules.ToMap()
+        fmt.Printf("a.exactRules: %v\n", data0)
 
-        for k, v := range a.segmentWildcardPaths {
-            //fmt.Printf("len(key): %d, len(value): %d\n", len(k), len(v))
-            fmt.Printf("key: %T, value: %T\n", reflect.TypeOf(k), reflect.TypeOf(v))
-        fmt.Printf("=> Switch case\n")
-        switch c := v.(type) {
-          case string:
-            fmt.Printf("Item %q is a string, containing %q\n", k, c)
-          case float64:
-            fmt.Printf("Looks like item %q is a number, specifically %f\n", k, c)
-          case *radix.Tree:
-            fmt.Printf("It is a radix.Tree")
-          default:
-            fmt.Printf("==> Here")
-            fmt.Printf("Not sure what type item %q is, but I think it might be %T\n", k, c)
-          }
-        }
-        fmt.Println("After Switch")
+        var data map[string]interface{}
+        data = a.prefixRules.ToMap()
+        fmt.Printf("a.prefixRules: %v\n", data)
+
+        var data2 map[string]interface{}
+        data2 = a.segmentWildcardPaths
+        fmt.Printf("a.segmentWildcardPaths: %v\n", data2)
         */
-        
+
 	wcPathDescrs := make([]wcPathDescr, 0, len(a.segmentWildcardPaths)+1)
 
 	less := func(i, j int) bool {
@@ -654,7 +648,7 @@ type ACL struct {
 
 SWCPATH:
 	for fullWCPath := range a.segmentWildcardPaths {
-        fmt.Printf("fullWCPath: %s\n", fullWCPath)
+        //fmt.Printf("fullWCPath: %s\n", fullWCPath)
 		if fullWCPath == "" {
 			continue
 		}
