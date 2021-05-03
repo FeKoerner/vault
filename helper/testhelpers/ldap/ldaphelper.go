@@ -14,7 +14,8 @@ func PrepareTestContainer(t *testing.T, version string) (cleanup func(), cfg *ld
 	runner, err := docker.NewServiceRunner(docker.RunOptions{
 		// Currently set to "michelvocks" until https://github.com/rroemhild/docker-test-openldap/pull/14
 		// has been merged.
-		ImageRepo:     "michelvocks/docker-test-openldap",
+        //ImageRepo:     "michelvocks/docker-test-openldap",
+        ImageRepo:     "felixkoerner/dockerl-test-openldap",
 		ImageTag:      version,
 		ContainerName: "ldap",
 		Ports:         []string{"2389/tcp"},
