@@ -44,7 +44,7 @@ func (c *Client) DialLDAP(cfg *ConfigEntry) (Connection, error) {
 		switch u.Scheme {
 		case "ldap":
 			if port == "" {
-				port = "2389"
+				port = "10389"
 			}
 			conn, err = c.LDAP.Dial("tcp", net.JoinHostPort(host, port))
 			if err != nil {
@@ -63,7 +63,7 @@ func (c *Client) DialLDAP(cfg *ConfigEntry) (Connection, error) {
 			}
 		case "ldaps":
 			if port == "" {
-				port = "636"
+				port = "10636"
 			}
 			tlsConfig, err = getTLSConfig(cfg, host)
 			if err != nil {
