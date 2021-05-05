@@ -29,8 +29,10 @@ func ConfigFields() map[string]*framework.FieldSchema {
 		},
 		"url": {
 			Type:        framework.TypeString,
-			Default:     "ldap://127.0.0.1",
-			Description: "LDAP URL to connect to (default: ldap://127.0.0.1). Multiple URLs can be specified by concatenating them with commas; they will be tried in-order.",
+            //Default:     "ldap://127.0.0.1",
+            Default:     "ldap://172.17.0.2",
+			//Description: "LDAP URL to connect to (default: ldap://127.0.0.1). Multiple URLs can be specified by concatenating them with commas; they will be tried in-order.",
+			Description: "LDAP URL to connect to (default: ldap://172.17.0.2). Multiple URLs can be specified by concatenating them with commas; they will be tried in-order.",
 			DisplayAttrs: &framework.DisplayAttributes{
 				Name: "URL",
 			},
